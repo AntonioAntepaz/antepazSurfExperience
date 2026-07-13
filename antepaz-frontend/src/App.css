@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Hace que el contenedor ocupe el 100% de la pantalla */
+  background-color: #F8FAFC; /* Fondo Blanco Arena */
+}
+
+.main-content {
+  flex: 1; /* Empuja al footer para que siempre esté abajo del todo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.welcome-box {
+  text-align: center;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border-top: 5px solid #F59E0B; /* Detalle Amarillo Atardecer */
+}
+
+.welcome-box h2 {
+  color: #0E7490; /* Azul Océano */
+  margin-bottom: 10px;
+}
+
+.welcome-box p {
+  color: #1E293B;
+  font-size: 1.1rem;
+}
