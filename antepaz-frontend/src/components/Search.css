@@ -1,0 +1,56 @@
+/* Contenedor general del buscador (el bloque completo) */
+.search-container {
+  background-color: #f4f9f9;  /* Un gris casi blanco, muy limpio, de fondo */
+  padding: 40px 20px;         /* Espacio interno: 40px arriba/abajo y 20px a los lados */
+  text-align: center;         /* Centra todo el texto y elementos que estén adentro */
+  border-bottom: 3px solid #e2e8f0; /* Una línea sutil gris abajo para separar secciones */
+}
+
+/* El título principal */
+.search-container h2 {
+  color: #006687;             /* El color azul marino de la identidad de la marca */
+  margin-bottom: 20px;        /* Separa el título del input que está abajo por 20px */
+  font-size: 1.8rem;          /* Tamaño de letra grande y legible */
+}
+
+/* La caja que envuelve al input y al botón */
+.search-box {
+  display: flex;              /* Activa Flexbox para poner el input y el botón uno al lado del otro */
+  justify-content: center;    /* Centra la caja horizontalmente en la pantalla */
+  gap: 10px;                  /* Deja una separación de 10px entre el input y el botón */
+  max-width: 600px;           /* Evita que el buscador se estire infinito en pantallas gigantes */
+  margin: 0 auto;             /* Truco clásico de CSS para centrar bloques horizontalmente */
+}
+
+/* La barra donde el usuario escribe */
+.search-input {
+  flex: 1;                    /* Le dice al input: "Estirate todo lo que puedas dentro del espacio" */
+  padding: 12px 20px;         /* Espacio interno para que el texto que escribas no quede apretado */
+  font-size: 1rem;            /* Tamaño de letra estándar y cómodo */
+  border: 2px solid #006687;  /* Borde con el azul de la marca */
+  border-radius: 8px;         /* Redondea las esquinas del input */
+  outline: none;              /* Quita el borde negro por defecto que le pone el navegador */
+}
+
+/* Qué pasa cuando el usuario hace clic adentro del input para escribir */
+.search-input:focus {
+  border-color: #f39c12;      /* El borde cambia a tu naranja surfero, avisando que está activo */
+}
+
+/* El botón de buscar */
+.search-button {
+  background-color: #f39c12;  /* Fondo con el color naranja distintivo de la marca */
+  color: white;               /* Texto del botón en color blanco */
+  border: none;               /* Le quita el borde feo que traen los botones por defecto */
+  padding: 12px 25px;         /* Espacio interno (alto y ancho) para darle cuerpo al botón */
+  font-size: 1rem;            /* Tamaño de letra igual al del input */
+  font-weight: bold;          /* Pone la letra en negrita para resaltar */
+  border-radius: 8px;         /* Redondea las esquinas igual que el input */
+  cursor: pointer;            /* Transforma la flecha del mouse en una "manito" al pasar por encima */
+  transition: background-color 0.2s; /* Hace que el cambio de color al pasar el mouse sea suave */
+}
+
+/* Qué pasa cuando pasamos el mouse por encima del botón */
+.search-button:hover {
+  background-color: #d3830e;  /* El naranja se vuelve un toque más oscuro para dar feedback visual */
+}

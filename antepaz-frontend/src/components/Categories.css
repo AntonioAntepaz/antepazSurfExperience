@@ -1,0 +1,86 @@
+/* Sección general que envuelve todo el bloque de categorías */
+.categories-section {
+  padding: 60px 20px;
+  background-color: #ffffff; /* Fondo blanco puro para que contraste con el buscador grisáceo */
+  text-align: center;
+}
+
+/* El título principal de la sección */
+.categories-title {
+  color: #006687; /* El azul distintivo de la escuela */
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+/* Contenedor que acomoda las tarjetas una al lado de la otra */
+.categories-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Permite que si la pantalla es chica (celular), las tarjetas se acomoden abajo */
+  gap: 30px; /* Separación de 30px entre cada tarjeta */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* La tarjeta individual de cada categoría */
+.category-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0; /* Un borde sutil */
+  border-radius: 12px; /* Esquinas redondeadas y modernas */
+  padding: 30px 20px;
+  width: 280px; /* Ancho fijo para que todas las tarjetas midan exactamente lo mismo */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra muy suave abajo */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave para los efectos */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Alinea los elementos internos equitativamente */
+}
+
+/* EFECTO HOVER: Cuando el usuario pasa el mouse, la tarjeta flota un poquito hacia arriba */
+.category-card:hover {
+  transform: translateY(-8px); /* Sube 8 píxeles */
+  box-shadow: 0 12px 20px rgba(0, 96, 135, 0.1); /* La sombra se vuelve más profunda con el azul de la marca */
+  border-color: #006687; /* El borde adopta el azul de la escuela */
+}
+
+/* Estilos para el emoji/icono */
+.category-icon {
+  font-size: 3rem; /* Lo hacemos bien grande y llamativo */
+  margin-bottom: 15px;
+}
+
+/* El título dentro de la tarjeta */
+.category-card h3 {
+  color: #333333;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+/* La descripción de la tarjeta */
+.category-card p {
+  color: #666666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1; /* Hace que el texto ocupe el espacio disponible para que los botones queden alineados abajo */
+}
+
+/* El botón interno de cada tarjeta */
+.category-btn {
+  background-color: transparent;
+  color: #006687;
+  border: 2px solid #006687; /* Botón de estilo "outline" (solo borde) */
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Cuando pasas el mouse por encima del botón de la tarjeta */
+.category-btn:hover {
+  background-color: #006687; /* Se llena con el azul de la marca */
+  color: white; /* La letra pasa a blanca */
+}
