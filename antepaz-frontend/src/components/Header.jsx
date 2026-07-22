@@ -1,11 +1,12 @@
 import React from 'react';
 import './Header.css';
+import logo from '../assets/logo.png';
 
 export default function Header() {
   return (
     <header className="main-header">
       <div className="header-left" onClick={() => window.location.href = '/'}>
-        <div className="logo-placeholder">AS</div>
+        <img src={logo} alt="Antepaz Surf Experience" className="brand-logo" />
         <div className="brand-info">
           <h1>Antepaz Surf Experience</h1>
           <span>Panamá</span>

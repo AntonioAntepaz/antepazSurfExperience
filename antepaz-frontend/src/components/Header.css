@@ -19,6 +19,14 @@
   cursor: pointer;
 }
 
+.brand-logo {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%; /* Si usas la versión con fondo negro, esto lo hace un círculo perfecto */
+  object-fit: cover;
+  margin-right: 12px;
+}
+
 .logo-placeholder {
   width: 45px;
   height: 45px;
