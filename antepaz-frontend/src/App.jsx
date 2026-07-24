@@ -3,6 +3,7 @@ import Header from './components/Header';
 import Search from './components/Search';
 import Categories from './components/Categories';
 import FeaturedProducts from './components/FeaturedProducts'; // <-- Importación
+import AddProduct from './components/AddProduct';
 import Footer from './components/Footer';
 import './App.css';
 
@@ -13,6 +14,7 @@ function App() {
       <Search />
       <Categories />
       <FeaturedProducts /> {/* <-- Lo usamos acá */}
+      <AddProduct />
       <Footer />
     </div>
   );
