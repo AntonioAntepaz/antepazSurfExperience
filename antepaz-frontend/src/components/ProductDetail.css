@@ -1,0 +1,122 @@
+.product-detail-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* CRITERIO 1: Header cubre el 100% del ancho */
+.product-detail-header {
+  width: 100%;
+  background-color: #0e7490;
+  color: #ffffff;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between; /* Alinea título a izq y botón a der */
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* CRITERIO 2: Título alineado a la izquierda */
+.product-detail-title {
+  font-size: 22px;
+  margin: 0;
+  text-align: left;
+}
+
+/* CRITERIO 3: Flecha para volver alineada a la derecha */
+.back-arrow-btn {
+  background: transparent;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.back-arrow-btn:hover {
+  background-color: #ffffff;
+  color: #0e7490;
+}
+
+/* CRITERIO 4: Body con imagen y descripción */
+.product-detail-body {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 40px;
+  text-align: left;
+}
+
+.detail-image-container {
+  flex: 1;
+  max-height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.detail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-info-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.detail-info-container h2 {
+  font-size: 20px;
+  color: #1e293b;
+  margin-top: 0;
+}
+
+.detail-description {
+  color: #475569;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.detail-extra {
+  margin: 20px 0;
+  padding: 16px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.detail-price {
+  font-size: 22px;
+  color: #0e7490;
+  margin-top: 8px;
+}
+
+.btn-reserve-detail {
+  background-color: #0e7490;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s;
+}
+
+.btn-reserve-detail:hover {
+  background-color: #0891b2;
+}
+
+/* Adaptabilidad a móviles */
+@media (max-width: 768px) {
+  .product-detail-body {
+    flex-direction: column;
+  }
+}

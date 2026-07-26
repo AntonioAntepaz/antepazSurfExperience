@@ -4,6 +4,7 @@ import Search from './components/Search';
 import Categories from './components/Categories';
 import FeaturedProducts from './components/FeaturedProducts'; // <-- Importación
 import AddProduct from './components/AddProduct';
+import ProductDetail from './components/ProductDetail';
 import Footer from './components/Footer';
 import './App.css';
 
@@ -15,6 +16,7 @@ function App() {
       <Categories />
       <FeaturedProducts /> {/* <-- Lo usamos acá */}
       <AddProduct />
+      <ProductDetail/>
       <Footer />
     </div>
   );
