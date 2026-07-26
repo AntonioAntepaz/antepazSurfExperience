@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/Header';
 import Search from './components/Search';
 import Categories from './components/Categories';
-import FeaturedProducts from './components/FeaturedProducts'; // <-- Importación
+import FeaturedProducts from './components/FeaturedProducts';
 import AddProduct from './components/AddProduct';
 import ProductDetail from './components/ProductDetail';
 import Footer from './components/Footer';
@@ -14,9 +14,9 @@ function App() {
       <Header />
       <Search />
       <Categories />
-      <FeaturedProducts /> {/* <-- Lo usamos acá */}
-      <AddProduct />
-      <ProductDetail/>
+      <FeaturedProducts /> 
+      <ProductDetail /> 
+      {/*  <AddProduct /> */}
       <Footer />
     </div>
   );

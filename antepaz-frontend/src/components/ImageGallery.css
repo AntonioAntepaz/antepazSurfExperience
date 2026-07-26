@@ -1,0 +1,97 @@
+/* CRITERIO 1: Bloque al 100% del contenedor */
+.gallery-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 12px;
+  height: 400px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* CRITERIO 2: Imagen principal en la mitad izquierda */
+.main-image-container {
+  flex: 1;
+  height: 100%;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  overflow: hidden;
+}
+
+/* CRITERIO 3: Grilla 2 filas x 2 columnas en la mitad derecha */
+.secondary-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 12px;
+  height: 100%;
+  position: relative;
+}
+
+.secondary-image-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Redondear las esquinas derechas de la grilla */
+.secondary-grid .secondary-image-container:nth-child(2) {
+  border-top-right-radius: 12px;
+}
+
+.secondary-grid .secondary-image-container:nth-child(4) {
+  border-bottom-right-radius: 12px;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery-img:hover {
+  transform: scale(1.03);
+}
+
+/* CRITERIO 4: Botón "Ver más" en región inferior derecha */
+.see-more-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.see-more-btn:hover {
+  background-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* CRITERIO 5: Responsivo para mobile y tablet */
+@media (max-width: 768px) {
+  .gallery-container {
+    height: 250px;
+  }
+
+  .secondary-grid {
+    display: none; /* Oculta la grilla secundaria en celulares */
+  }
+
+  .main-image-container {
+    border-radius: 12px; /* Redondea toda la imagen principal */
+  }
+}
