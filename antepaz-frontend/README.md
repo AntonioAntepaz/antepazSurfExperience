@@ -36,4 +36,4 @@ Bienvenido/a al repositorio oficial de **Antepaz Surf Experience** , una platafo
 
 1. Clonar el repositorio:
    ```bash
-   git clone [https://github.com/AntonioAntepaz/antepazSurfExperience.git](https://github.com/AntonioAntepaz/antepazSurfExperience.git)
+   git clone https://github.com/AntonioAntepaz/antepazSurfExperience.git
