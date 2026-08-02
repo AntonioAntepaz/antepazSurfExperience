@@ -54,3 +54,33 @@
 .search-button:hover {
   background-color: #d3830e;  /* El naranja se vuelve un toque más oscuro para dar feedback visual */
 }
+
+/* ==========================================
+   📱 ADAPTACIÓN RESPONSIVE DE BÚSQUEDA
+   ========================================== */
+@media (max-width: 768px) {
+  .search-container {
+    padding: 24px 16px;       /* Un poco menos de espacio arriba/abajo para celis */
+  }
+
+  .search-container h2 {
+    font-size: 1.4rem;        /* Achica un toque el título para que no ocupe tanto */
+  }
+
+  .search-box {
+    flex-direction: column;   /* Pone el input arriba y el botón abajo */
+    width: 100%;
+    gap: 12px;                /* Separación prolija entre input y botón */
+  }
+
+  .search-input {
+    width: 100%;
+    box-sizing: border-box;   /* Asegura que el padding no desborde la pantalla */
+    font-size: 0.95rem;       /* Tamaño ideal para escribir cómodo en el celu */
+  }
+
+  .search-button {
+    width: 100%;               /* El botón ocupa todo el ancho */
+    box-sizing: border-box;
+  }
+}

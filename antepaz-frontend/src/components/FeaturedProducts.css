@@ -96,8 +96,64 @@
 }
 
 /* Adaptación Responsive para pantallas chicas/celulares */
+
 @media (max-width: 768px) {
+  .featured-container {
+    padding: 0 12px;
+  }
+
   .products-grid {
-    grid-template-columns: 1fr; /* 1 columna en celulares */
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .product-card {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden !important; /* Corta cualquier sobrante que empuje hacia afuera */
+  }
+
+  .product-image-container {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: 160px;
+  }
+
+  .product-info {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box !important;
+    padding: 12px;
+  }
+
+  /* Control para que el título rompa línea si es muy largo */
+  .product-info h3 {
+    font-size: 1rem;
+    word-break: break-word;
+    margin-bottom: 6px;
+  }
+
+  /* Ajuste del precio + botón para que encajen perfecto */
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .product-price {
+    font-size: 1rem;
+  }
+
+  .btn-reserve {
+    padding: 6px 10px;
+    font-size: 0.75rem;          /* Tamaño ajustado para pantallas angostas */
+    white-space: nowrap;
+    max-width: 50%;
+    text-align: center;
   }
 }
