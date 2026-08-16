@@ -37,19 +37,17 @@ function App() {
       {/* El encabezado (Header) se muestra SIEMPRE en todas las páginas */}
       <Header />
       
-      {/* Criterio 1: Evaluamos si la ruta es /administracion o /admin */}
-      {currentPath === '/administracion' || currentPath === '/admin' ? (
-        // Si la URL coincide con la de administración, renderizamos únicamente el Panel de Administración
-        <AdminPanel />
-      ) : (
-        // Si no es /administracion (es el Home "/"), mostramos la vista pública con todas sus secciones
-        <>
-          <Search />
-          <Categories />
-          <FeaturedProducts />
-          <ProductDetail />
-        </>
-      )}
+      {/* Evaluamos si la ruta incluye 'administracion' o 'admin' */}
+{currentPath.includes('administracion') || currentPath.includes('admin') ? (
+  <AdminPanel />
+) : (
+  <>
+    <Search />
+    <Categories />
+    <FeaturedProducts />
+    <ProductDetail />
+  </>
+)}
 
       {/* El pie de página (Footer) también se muestra SIEMPRE al final de todo */}
       <Footer />

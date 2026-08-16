@@ -1,96 +1,118 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './AddProduct.css';
 
-// Lista de productos existentes de prueba para validar duplicados
-const INITIAL_PRODUCTS = [
-  "Clase Principiante Individual",
-  "Alquiler Tabla Softboard",
-  "Surf Trip Playa Venao"
-];
+export default function AddProduct() {
+  const [formData, setFormData] = useState({
+    title: '',
+    price: '',
+    duration: '',
+    image_url: ''
+  });
 
-function AddProduct() {
-  const [productName, setProductName] = useState('');
-  const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [productsList, setProductsList] = useState(INITIAL_PRODUCTS);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState({ type: '', text: '' });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage('');
-    setSuccessMessage('');
+    setStatusMessage({ type: '', text: '' });
 
-    // Criterio 6: Validar si el nombre ya existe
-    const exists = productsList.some(
-      (item) => item.toLowerCase() === productName.trim().toLowerCase()
-    );
+    // Limpiamos la URL quitando espacios vacíos que rompen la imagen en la DB
+    const cleanImageUrl = formData.image_url.trim();
 
-    if (exists) {
-      setErrorMessage('⚠️ El nombre del producto ya está en uso. Intentá con otro.');
-      return;
-    }
+    const payload = {
+      title: formData.title.trim(),
+      price: parseFloat(formData.price),
+      duration: formData.duration.trim(),
+      image_url: cleanImageUrl
+    };
 
-    // Criterio 5: Guardar el producto
-    setProductsList([...productsList, productName.trim()]);
-    setSuccessMessage('✅ ¡Producto registrado con éxito!');
-
-    // Limpiar formulario
-    setProductName('');
-    setDescription('');
-    setImageUrl('');
+    axios.post('http://localhost:8080/api/products', payload)
+      .then((response) => {
+        setStatusMessage({
+          type: 'success',
+          text: '¡Producto creado exitosamente!'
+        });
+        setFormData({
+          title: '',
+          price: '',
+          duration: '',
+          image_url: ''
+        });
+      })
+      .catch((error) => {
+        console.error('Error al crear el producto:', error);
+        setStatusMessage({
+          type: 'error',
+          text: 'Ocurrió un error al guardar el producto.'
+        });
+      });
   };
 
   return (
-    <div className="admin-container">
-      {/* Criterio 2: Panel con botón/encabezado "Agregar producto" */}
-      <div className="admin-header">
-        <h2>Panel de Administración</h2>
-        <button className="btn-add-header">
-          + Agregar producto
-        </button>
-      </div>
+    <div className="add-product-container">
+      <h2>➕ Agregar Nuevo Producto</h2>
 
-      <form className="add-product-form" onSubmit={handleSubmit}>
-        <h3>Registrar Nuevo Producto</h3>
+      {statusMessage.text && (
+        <div className={`status-alert ${statusMessage.type}`}>
+          {statusMessage.text}
+        </div>
+      )}
 
-        {errorMessage && <div className="alert alert-error">{errorMessage}</div>}
-        {successMessage && <div className="alert alert-success">{successMessage}</div>}
-
-        {/* Criterio 3: Campos para nombre, descripción e imagen */}
+      <form onSubmit={handleSubmit} className="add-product-form">
         <div className="form-group">
-          <label htmlFor="name">Nombre del Producto *</label>
+          <label htmlFor="title">Título del Producto</label>
           <input
             type="text"
-            id="name"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            placeholder="Ej: Clase Surf Avanzada"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
             required
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="description">Descripción *</label>
-          <textarea
-            id="description"
-            rows="4"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Escribí una descripción detallada..."
+          <label htmlFor="price">Precio ($)</label>
+          <input
+            type="number"
+            id="price"
+            name="price"
+            step="0.01"
+            value={formData.price}
+            onChange={handleChange}
             required
           />
         </div>
 
-        {/* Criterio 4: Carga de URL o subida de imagen */}
         <div className="form-group">
-          <label htmlFor="image">URL de la Imagen *</label>
+          <label htmlFor="duration">Duración</label>
+          <input
+            type="text"
+            id="duration"
+            name="duration"
+            value={formData.duration}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="image_url">URL de la Imagen</label>
           <input
             type="url"
-            id="image"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            placeholder="https://ejemplo.com/imagen.jpg"
+            id="image_url"
+            name="image_url"
+            placeholder="Ej: https://images.unsplash.com/photo-..."
+            value={formData.image_url}
+            onChange={handleChange}
             required
           />
         </div>
@@ -102,5 +124,3 @@ function AddProduct() {
     </div>
   );
 }
-
-export default AddProduct;

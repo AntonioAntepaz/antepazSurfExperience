@@ -1,45 +1,120 @@
-// Importamos React y useState para manejar el listado dinámico de productos
-import React, { useState } from 'react';
-
-// Importamos los estilos de la lista
+import React, { useState, useEffect } from 'react';
 import './ProductList.css';
 
-// Lista inicial de productos de prueba
-const INITIAL_PRODUCTS = [
-  { id: 1, name: "Clase Principiante Individual", price: 45 },
-  { id: 2, name: "Alquiler Tabla Softboard", price: 20 },
-  { id: 3, name: "Surf Trip Playa Venao", price: 120 },
-  { id: 4, name: "Clase Avanzada de Manejo de Olas", price: 65 },
-  { id: 5, name: "Alquiler Neopren / Wetsuit", price: 15 },
-  { id: 6, name: "Coaching Personalizado GoPro", price: 85 },
-  { id: 7, name: "Surf Camp Fin de Semana", price: 250 },
-  { id: 8, name: "Clase Grip & Balance en Tierra", price: 25 },
-  { id: 9, name: "Alquiler Tabla Hardboard Epoxy", price: 30 },
-  { id: 10, name: "Experiencia Sunset Surf", price: 50 },
-  { id: 11, name: "Clase Grupal Amigos (4 Pax)", price: 100 },
-  { id: 12, name: "Surf Guiding Bocas del Toro", price: 150 }
-];
-
 function ProductList() {
-  // Criterio 3: Convertimos los productos en un Estado para poder eliminar elementos dinámicamente
-  const [products, setProducts] = useState(INITIAL_PRODUCTS);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Función para manejar la eliminación de un producto
+  // Estados para el Modal de Edición
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    title: '',
+    price: '',
+    duration: '',
+    image_url: ''
+  });
+
+  // Cargar productos desde la base de datos
+  const fetchProducts = () => {
+    fetch('http://localhost:8080/api/products')
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error al obtener productos:', error);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // Función para eliminar producto
   const handleDeleteProduct = (productId, productName) => {
-    // Criterio 2: Al presionar "Eliminar producto" mostramos un mensaje de confirmación
     const confirmDelete = window.confirm(
       `¿Estás seguro de que deseas eliminar el producto "${productName}"?`
     );
 
-    // Criterio 3 y 4: Evaluamos si el usuario aceptó la confirmación
     if (confirmDelete) {
-      // Si ACEPTA: Filtramos el arreglo eliminando el producto con ese ID
-      const updatedProducts = products.filter(product => product.id !== productId);
-      setProducts(updatedProducts);
-      alert(`El producto "${productName}" fue eliminado con éxito.`);
+      fetch(`http://localhost:8080/api/products/${productId}`, {
+        method: 'DELETE',
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert(`El producto "${productName}" fue eliminado con éxito.`);
+            fetchProducts();
+          } else {
+            alert('Ocurrió un error al intentar eliminar el producto.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error al eliminar producto:', error);
+          alert('No se pudo conectar con el servidor.');
+        });
     }
-    // Si NO ACEPTA: Simplemente no hace nada y mantiene la lista sin cambios (Criterio 4)
   };
+
+  // Abrir Modal de Edición
+  const handleEditClick = (product) => {
+    setEditingProduct(product);
+    setEditFormData({
+      title: product.title,
+      price: product.price,
+      duration: product.duration || '',
+      image_url: product.image_url || ''
+    });
+  };
+
+  // Manejar cambios en el formulario de edición
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Guardar Cambios (PUT)
+  const handleUpdateProduct = (e) => {
+    e.preventDefault();
+
+    const updatedPayload = {
+      ...editFormData,
+      price: parseFloat(editFormData.price)
+    };
+
+    fetch(`http://localhost:8080/api/products/${editingProduct.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedPayload),
+    })
+      .then((response) => {
+        if (response.ok) {
+          alert('¡Producto actualizado correctamente!');
+          setEditingProduct(null); // Cerrar modal
+          fetchProducts(); // Refrescar lista
+        } else {
+          alert('Ocurrió un error al actualizar el producto.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error al actualizar producto:', error);
+        alert('No se pudo conectar con el servidor.');
+      });
+  };
+
+  if (loading) {
+    return (
+      <div className="product-list-container">
+        <h2>Cargando lista de administración...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="product-list-container">
@@ -48,13 +123,11 @@ function ProductList() {
         Gestión de productos activos ({products.length} disponibles)
       </p>
 
-      {/* Si la lista queda vacía, mostramos un mensaje */}
       {products.length === 0 ? (
         <div className="empty-list-message">
           <p>No hay productos registrados en el sistema.</p>
         </div>
       ) : (
-        /* Criterio 1: Tabla con la lista de productos */
         <table className="admin-table">
           <thead>
             <tr>
@@ -67,14 +140,19 @@ function ProductList() {
             {products.map((product) => (
               <tr key={product.id}>
                 <td className="col-id">#{product.id}</td>
-                <td className="col-name">{product.name}</td>
+                <td className="col-name">{product.title}</td>
                 <td className="col-actions">
-                  <button className="btn-action edit-btn">✏️ Editar</button>
-                  
-                  {/* Criterio 1: Botón Eliminar con su listener de clic */}
-                  <button 
+                  <button
+                    className="btn-action edit-btn"
+                    onClick={() => handleEditClick(product)}
+                  >
+                    ✏️ Editar
+                  </button>
+                  <button
                     className="btn-action delete-btn"
-                    onClick={() => handleDeleteProduct(product.id, product.name)}
+                    onClick={() =>
+                      handleDeleteProduct(product.id, product.title)
+                    }
                   >
                     🗑️ Eliminar
                   </button>
@@ -84,8 +162,119 @@ function ProductList() {
           </tbody>
         </table>
       )}
+
+      {/* Modal / Overlay de Edición */}
+      {editingProduct && (
+        <div className="modal-overlay" style={modalOverlayStyle}>
+          <div className="modal-content" style={modalContentStyle}>
+            <h3>✏️ Editar Producto #{editingProduct.id}</h3>
+            <form onSubmit={handleUpdateProduct}>
+              <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', fontWeight: 'bold' }}>Título:</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={editFormData.title}
+                  onChange={handleEditChange}
+                  style={inputStyle}
+                  required
+                />
+              </div>
+
+              <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', fontWeight: 'bold' }}>Precio ($):</label>
+                <input
+                  type="number"
+                  name="price"
+                  step="0.01"
+                  value={editFormData.price}
+                  onChange={handleEditChange}
+                  style={inputStyle}
+                  required
+                />
+              </div>
+
+              <div style={{ marginBottom: '10px' }}>
+                <label style={{ display: 'block', fontWeight: 'bold' }}>Duración:</label>
+                <input
+                  type="text"
+                  name="duration"
+                  value={editFormData.duration}
+                  onChange={handleEditChange}
+                  style={inputStyle}
+                  required
+                />
+              </div>
+
+              <div style={{ marginBottom: '15px' }}>
+                <label style={{ display: 'block', fontWeight: 'bold' }}>URL Imagen:</label>
+                <input
+                  type="text"
+                  name="image_url"
+                  value={editFormData.image_url}
+                  onChange={handleEditChange}
+                  style={inputStyle}
+                  required
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  onClick={() => setEditingProduct(null)}
+                  style={{ padding: '8px 15px', cursor: 'pointer' }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  style={{
+                    padding: '8px 15px',
+                    backgroundColor: '#0288d1',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Guardar Cambios
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+// Estilos rápidos inline para el modal
+const modalOverlayStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1000
+};
+
+const modalContentStyle = {
+  backgroundColor: '#fff',
+  padding: '25px',
+  borderRadius: '8px',
+  width: '400px',
+  maxWidth: '90%'
+};
+
+const inputStyle = {
+  width: '100%',
+  padding: '8px',
+  marginTop: '4px',
+  boxSizing: 'border-box'
+};
 
 export default ProductList;
