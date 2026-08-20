@@ -1,47 +1,64 @@
-import React from 'react';
-import './Categories.css'; // Vincula este componente con sus estilos visuales
+// 1. Importamos React y los Hooks necesarios:
+// - useState: para crear una "variable con memoria" que guarde la lista de categorías.
+// - useEffect: para ejecutar código automáticamente cuando el componente se carga en pantalla.
+import React, { useState, useEffect } from 'react';
+import './Categories.css'; // Importamos los estilos CSS para esta sección
 
 function Categories() {
-  // Creamos un array (lista) de objetos con la información de cada categoría.
-  // Esto es muy útil porque si el día de mañana agregás más servicios, solo sumás un objeto acá.
-  const categoriesData = [
-    {
-      id: 1,
-      title: 'Surf Lessons',
-      description: 'Aprende a correr tus primeras olas con instructores certificados.',
-      icon: '🏄‍♂️'
-    },
-    {
-      id: 2,
-      title: 'Surf Camp',
-      description: 'Una experiencia exclusiva para convivir y respirar surf 24/7.',
-      icon: '🏕️'
-    },
-    {
-      id: 3,
-      title: 'Surf Trip',
-      description: 'Viajes guiados a los mejores secretos y spots de surf en Panamá.',
-      icon: '🌴'
-    }
-  ];
+  // 2. Definimos el estado 'categories' inicializado como un arreglo vacío [].
+  // 'categories' guardará la lista que traigamos de la base de datos.
+  // 'setCategories' es la función que usamos para actualizar ese estado.
+  const [categories, setCategories] = useState([]);
+
+  // 3. useEffect se ejecuta una sola vez cuando el componente se renderiza por primera vez (gracias al [] del final).
+  useEffect(() => {
+    // Hacemos una petición HTTP GET a nuestra API de Spring Boot
+    fetch('http://localhost:8080/api/categories')
+      .then((res) => res.json()) // Convertimos la respuesta del servidor a formato JSON (objeto JavaScript)
+      .then((data) => {
+        // Guardamos los datos recibidos dentro de nuestro estado 'categories'
+        setCategories(data);
+      })
+      .catch((err) => {
+        // Si hay un error de conexión o en el servidor, lo mostramos en la consola del navegador
+        console.error('Error al cargar categorías desde el Backend:', err);
+      });
+  }, []); // <-- El arreglo vacío asegura que la consulta a la API se haga SOLO una vez
 
   return (
     <section className="categories-section">
-      {/* Título principal de la sección */}
+      {/* Título de la sección */}
       <h2 className="categories-title">Nuestras Experiencias</h2>
-      
-      {/* Contenedor tipo grilla que va a envolver a las tres tarjetas */}
+
+      {/* Grilla contenedora de las tarjetas */}
       <div className="categories-grid">
-        {/* Usamos .map() para recorrer la lista de categorías y dibujar una tarjeta por cada una */}
-        {categoriesData.map((category) => (
+        {/* 
+          4. Usamos el método .map() para iterar/recorrer el arreglo 'categories' 
+          y transformar cada objeto de la BD en un bloque JSX (tarjeta HTML).
+        */}
+        {categories.map((category) => (
+          // Cada elemento de una lista en React DEBE llevar una propiedad 'key' única (usamos el id de la BD)
           <div key={category.id} className="category-card">
-            {/* Icono representativo de la experiencia */}
-            <div className="category-icon">{category.icon}</div>
-            {/* Título de la tarjeta */}
+            
+            {/* 5. Condicional: Si existe 'imageUrl' renderizamos la etiqueta <img>, sino mostramos un icono */}
+            {category.imageUrl ? (
+              <img 
+                src={category.imageUrl} 
+                alt={category.title} 
+                className="category-image" 
+                style={{ width: '60px', height: '60px', objectFit: 'contain', marginBottom: '1rem' }}
+              />
+            ) : (
+              <div className="category-icon">🏄</div>
+            )}
+            
+            {/* Título dinámico que viene de la BD */}
             <h3>{category.title}</h3>
-            {/* Breve descripción del servicio */}
+            
+            {/* Descripción dinámica que viene de la BD */}
             <p>{category.description}</p>
-            {/* Botón de acción para ver más detalles */}
+            
+            {/* Botón interactivo */}
             <button className="category-btn">Ver más</button>
           </div>
         ))}
